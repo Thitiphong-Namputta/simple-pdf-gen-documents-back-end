@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @font-face {
+      font-family: 'Sarabun';
+      src: url('/fonts/Sarabun-Regular.ttf') format('truetype');
+      font-weight: normal;
+    }
+    @font-face {
+      font-family: 'Sarabun';
+      src: url('/fonts/Sarabun-Bold.ttf') format('truetype');
+      font-weight: bold;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Sarabun', sans-serif;
+      font-size: 13px;
+      color: #222;
+      background: #fff;
+      padding: 0;
+    }
+    .page { padding: 20px 24px; }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
+    .company-name { font-size: 20px; font-weight: bold; color: #1a1a2e; }
+    .company-info { font-size: 11px; color: #555; margin-top: 4px; line-height: 1.6; }
+    .invoice-title { text-align: right; }
+    .invoice-title h1 { font-size: 28px; font-weight: bold; color: #1a1a2e; letter-spacing: 1px; }
+    .invoice-title .inv-no { font-size: 13px; color: #555; margin-top: 4px; }
+    .divider { border: none; border-top: 2px solid #1a1a2e; margin-bottom: 20px; }
+    .meta { display: flex; justify-content: space-between; margin-bottom: 24px; }
+    .meta-block label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+    .meta-block p { font-size: 13px; font-weight: bold; margin-top: 2px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    thead tr { background: #1a1a2e; color: #fff; }
+    thead th { padding: 9px 10px; text-align: left; font-size: 12px; font-weight: bold; }
+    thead th:last-child, thead th:nth-child(2), thead th:nth-child(3) { text-align: right; }
+    tbody tr:nth-child(even) { background: #f7f7fb; }
+    tbody td { padding: 8px 10px; border-bottom: 1px solid #e8e8f0; font-size: 12px; }
+    tbody td:nth-child(2), tbody td:nth-child(3), tbody td:nth-child(4) { text-align: right; }
+    .summary { display: flex; justify-content: flex-end; }
+    .summary-table { width: 260px; }
+    .summary-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; border-bottom: 1px solid #eee; }
+    .summary-row.total { font-weight: bold; font-size: 15px; border-bottom: none; border-top: 2px solid #1a1a2e; padding-top: 8px; }
+    .footer-note { margin-top: 30px; font-size: 11px; color: #888; text-align: center; border-top: 1px solid #eee; padding-top: 12px; }
+    @media print {
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div>
+        <div class="company-name">{{companyName}}</div>
+        <div class="company-info">
+          {{#if companyAddress}}{{companyAddress}}<br>{{/if}}
+          {{#if companyTel}}โทร: {{companyTel}}<br>{{/if}}
+          {{#if companyEmail}}อีเมล: {{companyEmail}}{{/if}}
+        </div>
+      </div>
+      <div class="invoice-title">
+        <h1>ใบแจ้งหนี้</h1>
+        <div class="inv-no">เลขที่: {{invoiceNo}}</div>
+        {{#if invoiceDate}}<div class="inv-no">วันที่: {{invoiceDate}}</div>{{/if}}
+      </div>
+    </div>
+    <hr class="divider" />
+    <div class="meta">
+      <div class="meta-block">
+        <label>ลูกค้า</label>
+        <p>{{clientName}}</p>
+        {{#if clientAddress}}<div style="font-size:11px;color:#555;margin-top:2px;">{{clientAddress}}</div>{{/if}}
+      </div>
+      {{#if dueDate}}
+      <div class="meta-block" style="text-align:right;">
+        <label>กำหนดชำระ</label>
+        <p>{{dueDate}}</p>
+      </div>
+      {{/if}}
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>รายการ</th>
+          <th>จำนวน</th>
+          <th>ราคา/หน่วย (฿)</th>
+          <th style="text-align:right;">รวม (฿)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each items}}
+        <tr>
+          <td>{{add @index 1}}</td>
+          <td>{{name}}</td>
+          <td style="text-align:right;">{{qty}}</td>
+          <td style="text-align:right;">{{formatNumber price}}</td>
+          <td style="text-align:right;">{{formatNumber (multiply qty price)}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <div class="summary">
+      <div class="summary-table">
+        <div class="summary-row">
+          <span>ยอดรวม</span>
+          <span>{{formatNumber subtotal}} ฿</span>
+        </div>
+        {{#if tax}}
+        <div class="summary-row">
+          <span>ภาษีมูลค่าเพิ่ม ({{tax}}%)</span>
+          <span>{{formatNumber taxAmount}} ฿</span>
+        </div>
+        {{/if}}
+        <div class="summary-row total">
+          <span>ยอดสุทธิ</span>
+          <span>{{formatNumber total}} ฿</span>
+        </div>
+      </div>
+    </div>
+    {{#if note}}
+    <div class="footer-note">หมายเหตุ: {{note}}</div>
+    {{/if}}
+    {{^note}}
+    <div class="footer-note">ขอบคุณที่ใช้บริการ</div>
+    {{/note}}
+  </div>
+</body>
+</html>

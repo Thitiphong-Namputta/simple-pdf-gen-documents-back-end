@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @font-face {
+      font-family: 'Sarabun';
+      src: url('/fonts/Sarabun-Regular.ttf') format('truetype');
+      font-weight: normal;
+    }
+    @font-face {
+      font-family: 'Sarabun';
+      src: url('/fonts/Sarabun-Bold.ttf') format('truetype');
+      font-weight: bold;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; }
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .certificate {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 60px;
+      border: 12px double #b8960c;
+      outline: 2px solid #b8960c;
+      outline-offset: -20px;
+      position: relative;
+      background: linear-gradient(135deg, #fffdf0 0%, #fff8e1 100%);
+    }
+    .logo { font-size: 14px; color: #666; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+    .cert-title { font-size: 38px; font-weight: bold; color: #1a1a2e; letter-spacing: 2px; margin-bottom: 8px; }
+    .cert-subtitle { font-size: 15px; color: #666; margin-bottom: 30px; }
+    .cert-present { font-size: 14px; color: #555; margin-bottom: 12px; }
+    .recipient { font-size: 36px; font-weight: bold; color: #b8960c; margin-bottom: 16px; border-bottom: 2px solid #b8960c; padding-bottom: 8px; min-width: 300px; text-align: center; }
+    .cert-body { font-size: 15px; color: #444; text-align: center; line-height: 1.8; margin-bottom: 24px; max-width: 520px; }
+    .course-name { font-weight: bold; color: #1a1a2e; }
+    .cert-date { font-size: 13px; color: #777; margin-bottom: 32px; }
+    .signatures { display: flex; justify-content: space-around; width: 100%; max-width: 480px; margin-top: 8px; }
+    .sig-block { text-align: center; }
+    .sig-line { border-bottom: 1px solid #999; width: 140px; margin-bottom: 6px; }
+    .sig-name { font-size: 13px; font-weight: bold; color: #333; }
+    .sig-title { font-size: 11px; color: #888; }
+    .cert-no { position: absolute; bottom: 28px; right: 40px; font-size: 11px; color: #aaa; }
+    @media print {
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="certificate">
+    {{#if organizationName}}
+    <div class="logo">{{organizationName}}</div>
+    {{/if}}
+    <div class="cert-title">เกียรติบัตร</div>
+    <div class="cert-subtitle">Certificate of Achievement</div>
+    <div class="cert-present">มอบให้แก่</div>
+    <div class="recipient">{{recipientName}}</div>
+    <div class="cert-body">
+      เพื่อแสดงว่าได้ผ่านการอบรมและมีความรู้ความสามารถใน<br/>
+      <span class="course-name">{{courseName}}</span>
+      {{#if description}}<br/>{{description}}{{/if}}
+    </div>
+    <div class="cert-date">ณ วันที่ {{date}}</div>
+    {{#if signatories}}
+    <div class="signatures">
+      {{#each signatories}}
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-name">{{name}}</div>
+        <div class="sig-title">{{title}}</div>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <div class="signatures">
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-name">ผู้อำนวยการ</div>
+        <div class="sig-title">Director</div>
+      </div>
+    </div>
+    {{/if}}
+    {{#if certificateNo}}
+    <div class="cert-no">เลขที่ {{certificateNo}}</div>
+    {{/if}}
+  </div>
+</body>
+</html>

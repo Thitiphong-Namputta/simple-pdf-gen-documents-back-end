@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @font-face {
+      font-family: 'Sarabun';
+      src: url('/fonts/Sarabun-Regular.ttf') format('truetype');
+      font-weight: normal;
+    }
+    @font-face {
+      font-family: 'Sarabun';
+      src: url('/fonts/Sarabun-Bold.ttf') format('truetype');
+      font-weight: bold;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Sarabun', sans-serif; font-size: 14px; color: #111; background: #fff; line-height: 1.9; }
+    .page { padding: 20px 24px; }
+    h1 { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 8px; }
+    .doc-subtitle { text-align: center; font-size: 13px; color: #555; margin-bottom: 28px; }
+    .section { margin-bottom: 20px; }
+    .section-title { font-weight: bold; font-size: 14px; margin-bottom: 8px; }
+    p { margin-bottom: 10px; text-indent: 2em; }
+    .parties { background: #f8f8f8; border: 1px solid #ddd; border-radius: 4px; padding: 14px 16px; margin-bottom: 20px; }
+    .party { margin-bottom: 10px; }
+    .party:last-child { margin-bottom: 0; }
+    .party label { font-weight: bold; color: #1a1a2e; }
+    .clause { margin-bottom: 16px; }
+    .clause-title { font-weight: bold; }
+    .signatures { display: flex; justify-content: space-between; margin-top: 40px; }
+    .sig-block { width: 45%; }
+    .sig-line { border-bottom: 1px solid #333; margin-bottom: 6px; margin-top: 40px; }
+    .sig-label { font-size: 12px; color: #555; }
+    .sig-name { font-weight: bold; font-size: 13px; }
+    .sig-date { font-size: 12px; color: #777; margin-top: 4px; }
+    @media print {
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .clause { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>{{title}}</h1>
+    <div class="doc-subtitle">ทำ ณ วันที่ {{contractDate}}</div>
+
+    <div class="parties">
+      <div class="party">
+        <label>คู่สัญญาฝ่ายที่ 1 ({{party1Role}}): </label>
+        {{party1Name}}
+        {{#if party1Address}}<br><span style="font-size:12px;color:#555;">ที่อยู่: {{party1Address}}</span>{{/if}}
+      </div>
+      <div class="party">
+        <label>คู่สัญญาฝ่ายที่ 2 ({{party2Role}}): </label>
+        {{party2Name}}
+        {{#if party2Address}}<br><span style="font-size:12px;color:#555;">ที่อยู่: {{party2Address}}</span>{{/if}}
+      </div>
+    </div>
+
+    {{#if preamble}}
+    <div class="section">
+      <p>{{preamble}}</p>
+    </div>
+    {{/if}}
+
+    {{#each clauses}}
+    <div class="clause">
+      <div class="clause-title">ข้อ {{add @index 1}}. {{title}}</div>
+      <p>{{content}}</p>
+    </div>
+    {{/each}}
+
+    <div class="signatures">
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-name">{{party1Name}}</div>
+        <div class="sig-label">คู่สัญญาฝ่ายที่ 1 ({{party1Role}})</div>
+        <div class="sig-date">วันที่ ............................................</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-name">{{party2Name}}</div>
+        <div class="sig-label">คู่สัญญาฝ่ายที่ 2 ({{party2Role}})</div>
+        <div class="sig-date">วันที่ ............................................</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
