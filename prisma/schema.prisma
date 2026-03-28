@@ -4,13 +4,20 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
 }
 
 model DocumentRecord {
   id        String   @id @default(cuid())
   type      String
+  format    String   @default("pdf")
   filename  String
   summary   String
+  createdAt DateTime @default(now())
+}
+
+model ImportRecord {
+  id        String   @id @default(cuid())
+  type      String
+  payload   String   // JSON string of the imported row
   createdAt DateTime @default(now())
 }
