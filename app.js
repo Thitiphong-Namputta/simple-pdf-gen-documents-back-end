@@ -4,6 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { PORT, CLIENT_URL } from "./config/env.js";
 import pdfRouter from "./routes/pdf.route.js";
+import documentRouter from "./routes/document.route.js";
 import errorMiddleware from "./middlewares/error.middleware.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/fonts", express.static(path.join(__dirname, "src", "fonts")));
 
 app.use("/api/v1/pdf", pdfRouter);
+app.use("/api/v1/documents", documentRouter);
 
 app.use(errorMiddleware);
 
